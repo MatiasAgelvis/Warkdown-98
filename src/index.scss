@@ -1,0 +1,86 @@
+@import "bulma/css/bulma.css";
+@import "98.css";
+
+:root {
+  /* Color */
+  --surface: #c0c0c0;
+  --button-highlight: #ffffff;
+  --button-face: #dfdfdf;
+  --button-shadow: #808080;
+  --window-frame: #0a0a0a;
+  --dialog-blue: #000080;
+  --dialog-blue-light: #1084d0;
+  --dialog-gray: #808080;
+  --dialog-gray-light: #b5b5b5;
+  --link-blue: #0000ff;
+
+  /* Field borders (checkbox, input, etc) flip window-frame and button-shadow */
+  --border-field: inset -1px -1px var(--button-highlight),
+    inset 1px 1px var(--button-shadow), inset -2px -2px var(--button-face),
+    inset 2px 2px var(--window-frame);
+}
+
+html, body{
+  background-color:  #018281;
+  height: 100vh;
+}
+
+.container{
+  margin: 0;
+  display: flex;
+}
+
+.column {
+    flex-basis: fit-content;
+}
+
+.window{
+  min-width: max-content;
+  max-width: min-content;
+}
+
+.editor-window{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40vw;
+}
+
+.preview-window{
+  position: absolute;
+  left: 45vw;
+  width: 40vw;
+  top: 0;
+}
+
+
+textarea {
+  width: 40vw;
+  height: 40vh;
+  font-size: 1rem;
+  min-width: 0;
+}
+
+.textzone {
+  padding: 3px 4px;
+  border: none;
+  box-shadow: var(--border-field);
+  background-color: var(--button-highlight);
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  // min-height: 20vh;
+  max-width: 70vw;
+  overflow-y: initial;
+  overflow: scroll;
+  white-space: nowrap;
+
+  width: 40vw;
+  height: 40vh;
+}
+
+.resizable {
+  resize: both;
+}
