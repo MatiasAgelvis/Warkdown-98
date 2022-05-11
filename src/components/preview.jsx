@@ -6,7 +6,7 @@ import Draggable from "react-draggable";
 
 import "../index.scss";
 
-export const Preview = () => {
+export default function Preview() {
   const input = useRecoilValue(textState);
   const [focused, setFocused] = useRecoilState(focusState);
   const ref = useRef(null);
