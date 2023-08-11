@@ -1,15 +1,21 @@
-import React, { useRef } from "react";
-import ReactMarkdown from "react-markdown";
+import React, { useRef, useState, useEffect } from "react";
 import { textState, focusState } from "../store";
 import { useRecoilValue, useRecoilState } from "recoil";
 import Draggable from "react-draggable";
+import { useRemark } from "react-remark";
+import { saveAs } from 'file-saver';
+import { jsPDF } from "jspdf";
+import { micromark } from 'micromark'
 
 import "../index.scss";
 
 export default function Preview() {
-  const input = useRecoilValue(textState);
+  const markdownInput = useRecoilValue(textState);
   const [focused, setFocused] = useRecoilState(focusState);
+  // const [htmlRender, setMarkdownSource] = useRemark();
   const ref = useRef(null);
+  const [htmlRender, setHtml] = useState('')
+  const [wordWrap, setWordWrap] = useState(true)
 
   const dragOptions = {
     grid: [2, 2],
@@ -20,6 +26,24 @@ export default function Preview() {
       console.log(ref == focused);
     },
   };
+
+  useEffect(() => {
+    setHtml(micromark(markdownInput));
+  }, [markdownInput]);
+
+  async function htmlPdf(html, filename){
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const styledHtml = `<div class="" style='width:500px; margin: 1rem 2rem'>${html}</div>`
+    await doc.html(styledHtml);
+    // console.log(doc.internal.pageSize.getWidth())
+    doc.save(filename);
+  }
+
+  function textDownloader (blob, type, filename){
+    var blob = new Blob([blob], {type: type});
+    saveAs(blob, filename);
+  }
+
 
   return (
     <Draggable {...dragOptions}>
@@ -38,9 +62,27 @@ export default function Preview() {
         </div>
 
         <div className="window-body">
-          <ReactMarkdown className="textzone resizable" id="preview">
-            {input}
-          </ReactMarkdown>
+          
+          <div className={`textzone resizable ${wordWrap? "wrapText":""}`}
+          id="preview"
+          dangerouslySetInnerHTML={{__html:htmlRender}}>
+          </div>
+
+          <div className="status-bar">
+    {/* word wrap */}
+    <p className="status-bar-field">
+    <input type="checkbox" id="wrodwrap" onChange={e => setWordWrap( e.currentTarget.checked )} checked />
+    <label for="wrodwrap">Word Wrap</label>
+    </p>
+
+    {/* downloads */}
+    <p className="status-bar-field">Download formats:{"\t"}
+    <button onClick={() => textDownloader(markdownInput, 'text/markdown', 'Warkdown98.md')}>Markdown</button>
+    <button onClick={() => textDownloader(htmlRender, 'text/html', 'Warkdown98.html')}>HTML</button>
+    <button onClick={() => htmlPdf(htmlRender, 'Warkdown98.pdf')}>PDF</button>
+    </p>
+
+  </div>
         </div>
       </div>
     </Draggable>

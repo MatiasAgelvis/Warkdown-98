@@ -84,3 +84,12 @@ textarea {
 .resizable {
   resize: both;
 }
+
+.wrapText {
+  overflow-wrap: break-word;
+  white-space: break-spaces;
+}
+
+.modest {
+  @import "modest.scss"
+}
