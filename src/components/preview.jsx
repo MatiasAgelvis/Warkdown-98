@@ -15,7 +15,7 @@ export default function Preview() {
   // const [htmlRender, setMarkdownSource] = useRemark();
   const ref = useRef(null);
   const [htmlRender, setHtml] = useState('')
-  const [wordWrap, setWordWrap] = useState(true)
+  const [wordWrap, setWordWrap] = useState(false)
 
   const dragOptions = {
     grid: [2, 2],
@@ -23,7 +23,7 @@ export default function Preview() {
     handle: ".handle",
     onMouseDown: (e) => {
       setFocused(ref);
-      console.log(ref == focused);
+      // console.log(ref == focused);
     },
   };
 
@@ -71,8 +71,8 @@ export default function Preview() {
           <div className="status-bar">
     {/* word wrap */}
     <p className="status-bar-field">
-    <input type="checkbox" id="wrodwrap" onChange={e => setWordWrap( e.currentTarget.checked )} checked />
-    <label for="wrodwrap">Word Wrap</label>
+    <input type="checkbox" id="wrodwrap" onChange={() => setWordWrap( !wordWrap )} />
+    <label htmlFor="wrodwrap">Word Wrap</label>
     </p>
 
     {/* downloads */}
