@@ -1,89 +1,88 @@
-import React, { useRef, useState, useEffect } from "react";
-import { textState, focusState } from "../store";
+import React, { useRef, useState } from "react";
+import { textState, focusState, minimizedState } from "../store";
 import { useRecoilValue, useRecoilState } from "recoil";
 import Draggable from "react-draggable";
-import { useRemark } from "react-remark";
+import ReactMarkdown from "react-markdown";
+import { renderToStaticMarkup } from "react-dom/server";
 import { saveAs } from 'file-saver';
 import { jsPDF } from "jspdf";
-import { micromark } from 'micromark'
 
 import "../index.scss";
 
-export default function Preview() {
+export const PreviewContent = () => {
   const markdownInput = useRecoilValue(textState);
+  const [wordWrap, setWordWrap] = useState(false);
+
+  const htmlRender = renderToStaticMarkup(
+    <ReactMarkdown>{markdownInput}</ReactMarkdown>
+  );
+
+  async function htmlPdf(html, filename) {
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const styledHtml = `<div style='width:500px; margin: 1rem 2rem'>${html}</div>`;
+    await doc.html(styledHtml);
+    doc.save(filename);
+  }
+
+  function textDownloader(blob, type, filename) {
+    var blob = new Blob([blob], { type: type });
+    saveAs(blob, filename);
+  }
+
+  return (
+    <div className="window-body">
+      <div className={`textzone resizable ${wordWrap ? "wrapText" : ""}`} id="preview">
+        <ReactMarkdown>{markdownInput}</ReactMarkdown>
+      </div>
+
+      <div className="status-bar">
+        <p className="status-bar-field">
+          <input type="checkbox" id="wrodwrap" onChange={() => setWordWrap(!wordWrap)} />
+          <label htmlFor="wrodwrap">Word Wrap</label>
+        </p>
+        <p className="status-bar-field">Download formats:{"\t"}
+          <button onClick={() => textDownloader(markdownInput, 'text/markdown', 'Warkdown98.md')}>Markdown</button>
+          <button onClick={() => textDownloader(htmlRender, 'text/html', 'Warkdown98.html')}>HTML</button>
+          <button onClick={() => htmlPdf(htmlRender, 'Warkdown98.pdf')}>PDF</button>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default function Preview({ tabMode = false }) {
   const [focused, setFocused] = useRecoilState(focusState);
-  // const [htmlRender, setMarkdownSource] = useRemark();
+  const [minimized, setMinimized] = useRecoilState(minimizedState);
   const ref = useRef(null);
-  const [htmlRender, setHtml] = useState('')
-  const [wordWrap, setWordWrap] = useState(false)
+
+  if (tabMode) return <PreviewContent />;
 
   const dragOptions = {
     grid: [2, 2],
     bounds: { top: 0 },
     handle: ".handle",
-    onMouseDown: (e) => {
-      setFocused(ref);
-      // console.log(ref == focused);
-    },
+    onMouseDown: () => setFocused(ref),
   };
-
-  useEffect(() => {
-    setHtml(micromark(markdownInput));
-  }, [markdownInput]);
-
-  async function htmlPdf(html, filename){
-    const doc = new jsPDF('p', 'pt', 'a4');
-    const styledHtml = `<div class="" style='width:500px; margin: 1rem 2rem'>${html}</div>`
-    await doc.html(styledHtml);
-    // console.log(doc.internal.pageSize.getWidth())
-    doc.save(filename);
-  }
-
-  function textDownloader (blob, type, filename){
-    var blob = new Blob([blob], {type: type});
-    saveAs(blob, filename);
-  }
-
 
   return (
     <Draggable {...dragOptions}>
       <div
-        className="window preview-window"
+        className={`window preview-window${minimized.preview ? " is-minimized" : ""}`}
         ref={ref}
         style={{ zIndex: focused === ref ? 10 : 0 }}
       >
         <div className="title-bar handle">
           <div className="title-bar-text">Preview</div>
           <div className="title-bar-controls">
-            <button aria-label="Minimize" />
+            <button
+              aria-label="Minimize"
+              onClick={() => setMinimized((m) => ({ ...m, preview: true }))}
+            />
             <button aria-label="Maximize" />
             <button aria-label="Close" />
           </div>
         </div>
-
-        <div className="window-body">
-          
-          <div className={`textzone resizable ${wordWrap? "wrapText":""}`}
-          id="preview"
-          dangerouslySetInnerHTML={{__html:htmlRender}}>
-          </div>
-
-          <div className="status-bar">
-    {/* word wrap */}
-    <p className="status-bar-field">
-    <input type="checkbox" id="wrodwrap" onChange={() => setWordWrap( !wordWrap )} />
-    <label htmlFor="wrodwrap">Word Wrap</label>
-    </p>
-
-    {/* downloads */}
-    <p className="status-bar-field">Download formats:{"\t"}
-    <button onClick={() => textDownloader(markdownInput, 'text/markdown', 'Warkdown98.md')}>Markdown</button>
-    <button onClick={() => textDownloader(htmlRender, 'text/html', 'Warkdown98.html')}>HTML</button>
-    <button onClick={() => htmlPdf(htmlRender, 'Warkdown98.pdf')}>PDF</button>
-    </p>
-
-  </div>
-        </div>
+        <PreviewContent />
       </div>
     </Draggable>
   );

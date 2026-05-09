@@ -15,8 +15,18 @@ export const textState = atom({
 });
 
 export const focusState = atom({
-  key: "focusState", // unique ID (with respect to other atoms/selectors)
-  default: null, // default value (aka initial value)
+  key: "focusState",
+  default: null,
+});
+
+export const minimizedState = atom({
+  key: "minimizedState",
+  default: { editor: false, preview: false },
+});
+
+export const activeTabState = atom({
+  key: "activeTabState",
+  default: "editor",
 });
 
 // const defaultMarkdown = 
