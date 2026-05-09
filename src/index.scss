@@ -1,5 +1,7 @@
 @import "bulma/css/bulma.css";
 @import "98.css";
+@import "modest.scss";
+@import "preview.scss";
 
 :root {
   /* Color */
@@ -90,6 +92,171 @@ textarea {
   white-space: break-spaces;
 }
 
-.modest {
-  @import "modest.scss"
+/* Minimize windows */
+.is-minimized {
+  display: none;
+}
+
+/* Taskbar */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: var(--surface);
+  box-shadow: inset 0 1px var(--button-highlight);
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 4px;
+  z-index: 1000;
+}
+
+.taskbar-start {
+  height: 24px;
+  padding: 0 8px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.taskbar-start-icon {
+  font-size: 14px;
+}
+
+.taskbar-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--button-shadow);
+  box-shadow: 1px 0 var(--button-highlight);
+  margin: 0 2px;
+}
+
+.taskbar-btn {
+  height: 24px;
+  min-width: 120px;
+  max-width: 160px;
+  text-align: left;
+  padding: 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskbar-btn--active {
+  box-shadow: inset -1px -1px var(--button-highlight),
+    inset 1px 1px var(--button-shadow),
+    inset -2px -2px var(--button-face),
+    inset 2px 2px var(--window-frame);
+}
+
+/* Start menu */
+.taskbar-start-wrapper {
+  position: relative;
+}
+
+.start-menu {
+  position: absolute;
+  bottom: 34px;
+  left: 0;
+  display: flex;
+  background: var(--surface);
+  box-shadow: inset -1px -1px var(--window-frame),
+    inset 1px 1px var(--button-highlight),
+    inset -2px -2px var(--button-shadow),
+    inset 2px 2px var(--button-face);
+  min-width: 180px;
+  z-index: 2000;
+}
+
+.start-menu-sidebar {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background: var(--dialog-blue);
+  color: var(--button-highlight);
+  font-weight: bold;
+  font-size: 15px;
+  padding: 8px 4px;
+  letter-spacing: 1px;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.start-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  flex: 1;
+}
+
+.start-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.start-menu-item:hover {
+  background: var(--dialog-blue);
+  color: var(--button-highlight);
+}
+
+.start-menu-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Keep windows above taskbar */
+html, body {
+  padding-bottom: 32px;
+}
+
+/* Mobile tab view */
+.mobile-container {
+  padding: 4px;
+  height: calc(100vh - 32px);
+  box-sizing: border-box;
+}
+
+.mobile-window {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-window > .window-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-panel #editor,
+.tab-panel .textzone {
+  width: 100% !important;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.tab-panel .window-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
