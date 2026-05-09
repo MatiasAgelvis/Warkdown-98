@@ -159,7 +159,7 @@ textarea {
 
 .start-menu {
   position: absolute;
-  bottom: 34px;
+  bottom: 29px;
   left: 0;
   display: flex;
   background: var(--surface);
@@ -181,6 +181,9 @@ textarea {
   padding: 8px 4px;
   letter-spacing: 1px;
   user-select: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: keep-all;
   flex-shrink: 0;
 }
 
