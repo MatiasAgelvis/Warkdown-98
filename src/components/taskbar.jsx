@@ -1,17 +1,33 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
-import { minimizedState, activeTabState } from "../store";
+import {
+  minimizedState,
+  activeTabState,
+  activeWindowState,
+  windowLayoutState,
+} from "../store";
+import { WINDOW_IDS, getDefaultWindowLayout } from "../layout";
 
 export default function Taskbar({ isMobile }) {
   const [minimized, setMinimized] = useRecoilState(minimizedState);
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
+  const [activeWindow, setActiveWindow] = useRecoilState(activeWindowState);
+  const [, setWindowLayout] = useRecoilState(windowLayoutState);
   const [startOpen, setStartOpen] = useState(false);
 
   const handleEditorClick = () => {
     if (isMobile) {
       setActiveTab("editor");
     } else {
-      setMinimized((m) => ({ ...m, editor: !m.editor }));
+      if (minimized.editor) {
+        setMinimized((m) => ({ ...m, editor: false }));
+        setActiveWindow(WINDOW_IDS.EDITOR);
+      } else if (activeWindow !== WINDOW_IDS.EDITOR) {
+        setActiveWindow(WINDOW_IDS.EDITOR);
+      } else {
+        setMinimized((m) => ({ ...m, editor: true }));
+        setActiveWindow(WINDOW_IDS.PREVIEW);
+      }
     }
   };
 
@@ -19,8 +35,23 @@ export default function Taskbar({ isMobile }) {
     if (isMobile) {
       setActiveTab("preview");
     } else {
-      setMinimized((m) => ({ ...m, preview: !m.preview }));
+      if (minimized.preview) {
+        setMinimized((m) => ({ ...m, preview: false }));
+        setActiveWindow(WINDOW_IDS.PREVIEW);
+      } else if (activeWindow !== WINDOW_IDS.PREVIEW) {
+        setActiveWindow(WINDOW_IDS.PREVIEW);
+      } else {
+        setMinimized((m) => ({ ...m, preview: true }));
+        setActiveWindow(WINDOW_IDS.EDITOR);
+      }
     }
+  };
+
+  const handleResetLayout = () => {
+    setWindowLayout(getDefaultWindowLayout());
+    setMinimized({ editor: false, preview: false });
+    setActiveWindow(WINDOW_IDS.EDITOR);
+    setStartOpen(false);
   };
 
   const editorActive = isMobile ? activeTab === "editor" : !minimized.editor;
@@ -55,6 +86,15 @@ export default function Taskbar({ isMobile }) {
                 <span className="start-menu-icon">📄</span>
                 Preview
               </li>
+              {!isMobile && (
+                <li
+                  className="start-menu-item"
+                  onClick={handleResetLayout}
+                >
+                  <span className="start-menu-icon">🧭</span>
+                  Reset layout
+                </li>
+              )}
             </ul>
           </div>
         )}
@@ -74,6 +114,11 @@ export default function Taskbar({ isMobile }) {
       >
         👁 Preview
       </button>
+      {!isMobile && (
+        <button className="taskbar-btn" onClick={handleResetLayout}>
+          🧭 Reset
+        </button>
+      )}
     </div>
   );
 }

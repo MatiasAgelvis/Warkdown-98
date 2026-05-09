@@ -1,4 +1,10 @@
 import { atom } from "recoil";
+import {
+  WINDOW_IDS,
+  WINDOW_LAYOUT_STORAGE_KEY,
+  getDefaultWindowLayout,
+  sanitizeWindowLayout,
+} from "./layout";
 
 const defaultMarkdown = 
 `# Welcome to my React Markdown Previewer
@@ -50,9 +56,31 @@ export const textState = atom({
   default: defaultMarkdown, // default value (aka initial value)
 });
 
-export const focusState = atom({
-  key: "focusState",
-  default: null,
+function getInitialWindowLayout() {
+  if (typeof window === "undefined") {
+    return getDefaultWindowLayout();
+  }
+
+  try {
+    const raw = window.localStorage.getItem(WINDOW_LAYOUT_STORAGE_KEY);
+    if (!raw) {
+      return getDefaultWindowLayout();
+    }
+
+    return sanitizeWindowLayout(JSON.parse(raw));
+  } catch {
+    return getDefaultWindowLayout();
+  }
+}
+
+export const activeWindowState = atom({
+  key: "activeWindowState",
+  default: WINDOW_IDS.EDITOR,
+});
+
+export const windowLayoutState = atom({
+  key: "windowLayoutState",
+  default: getInitialWindowLayout(),
 });
 
 export const minimizedState = atom({
