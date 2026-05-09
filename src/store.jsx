@@ -1,13 +1,49 @@
 import { atom } from "recoil";
 
 const defaultMarkdown = 
-`# Welcome to my React Markdown Previewer!
+`# Welcome to my React Markdown Previewer
 
-## This is a sub-heading...
-### And here's some other cool stuff:
+## Quick sample
+### Styled text and content
 
-Heres some code, \`<div></div>\`, between 2 backticks.
-`
+Use **bold** text, _italic_, and **_both_** for emphasis.
+
+- Unordered item 1
+- Unordered item 2
+  - Nested item
+
+1. Ordered step one
+1. Ordered step two
+
+> This is a blockquote to highlight a note.
+
+Inline code looks like "const x = 5;".
+
+">
+">
+The sample below shows a fenced code block:
+
+\`\`\`
+function greet(name) {
+  return "Hello, ${name}!";
+}
+console.log(greet('World'));
+\`\`\`
+
+Link to [Vite](https://vitejs.dev) for fast dev build.
+
+| Feature | Example |
+| --- | --- |
+| Heading | H1, H2, H3 |
+| List | Ordered + unordered |
+
+- [x] Task one
+- [ ] Task two
+
+---
+
+Ready to edit and export with clear sections and code samples.
+`;
 
 export const textState = atom({
   key: "textState", // unique ID (with respect to other atoms/selectors)
