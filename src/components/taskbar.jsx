@@ -114,11 +114,6 @@ export default function Taskbar({ isMobile }) {
       >
         👁 Preview
       </button>
-      {!isMobile && (
-        <button className="taskbar-btn" onClick={handleResetLayout}>
-          🧭 Reset
-        </button>
-      )}
     </div>
   );
 }
