@@ -28,6 +28,20 @@ export default function Taskbar({ isMobile }) {
   const setWindowLayout = useSetWindowLayout();
   const [startOpen, setStartOpen] = useState(false);
   const now = useClock();
+
+  // Close the Start menu on any click outside it (as Win98 does).
+  useEffect(() => {
+    if (!startOpen) return undefined;
+
+    const handleOutside = (event) => {
+      if (!event.target.closest(".taskbar-start-wrapper")) {
+        setStartOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
+  }, [startOpen]);
   const clockLabel = now.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
