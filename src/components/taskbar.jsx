@@ -40,8 +40,6 @@ export default function Taskbar({ isMobile }) {
       if (minimized.editor) {
         setMinimized((m) => ({ ...m, editor: false }));
         setActiveWindow(WINDOW_IDS.EDITOR);
-      } else if (activeWindow !== WINDOW_IDS.EDITOR) {
-        setActiveWindow(WINDOW_IDS.EDITOR);
       } else {
         setMinimized((m) => ({ ...m, editor: true }));
         setActiveWindow(WINDOW_IDS.PREVIEW);
@@ -55,8 +53,6 @@ export default function Taskbar({ isMobile }) {
     } else {
       if (minimized.preview) {
         setMinimized((m) => ({ ...m, preview: false }));
-        setActiveWindow(WINDOW_IDS.PREVIEW);
-      } else if (activeWindow !== WINDOW_IDS.PREVIEW) {
         setActiveWindow(WINDOW_IDS.PREVIEW);
       } else {
         setMinimized((m) => ({ ...m, preview: true }));
