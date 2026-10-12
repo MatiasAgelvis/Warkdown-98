@@ -31,9 +31,11 @@ export const PreviewContent = () => {
   }
 
   return (
-    <div className="window-body">
-      <div className={`textzone resizable ${wordWrap ? "wrapText" : ""}`} id="preview">
-        <ReactMarkdown>{markdownInput}</ReactMarkdown>
+    <>
+      <div className="window-body">
+        <div className={`textzone resizable ${wordWrap ? "wrapText" : ""}`} id="preview">
+          <ReactMarkdown>{markdownInput}</ReactMarkdown>
+        </div>
       </div>
 
       <div className="status-bar">
@@ -47,7 +49,7 @@ export const PreviewContent = () => {
           <button onClick={() => htmlPdf(htmlRender, 'Warkdown98.pdf')}>PDF</button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

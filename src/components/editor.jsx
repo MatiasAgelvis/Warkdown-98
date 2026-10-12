@@ -11,12 +11,14 @@ export const EditorContent = () => {
   const onChange = (event) => setText(event.target.value);
 
   return (
-    <div className="window-body">
-      <textarea value={input} onChange={onChange} id="editor" />
+    <>
+      <div className="window-body">
+        <textarea value={input} onChange={onChange} id="editor" />
+      </div>
       <div className="status-bar">
         <div className="status-bar-field">Character Count: {input.length}</div>
       </div>
-    </div>
+    </>
   );
 };
 
