@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
+  Windows95FlyingWindows,
+  Windows95Notepad,
+  Windows98WriteDocument,
+  Windows95Explorer,
+} from "react-old-icons";
+import {
   minimizedState,
   activeTabState,
   activeWindowState,
   windowLayoutState,
 } from "../store";
 import { WINDOW_IDS, getDefaultWindowLayout } from "../layout";
+
+const ICON_SIZE = 16;
+const MENU_ICON_SIZE = 20;
 
 export default function Taskbar({ isMobile }) {
   const [minimized, setMinimized] = useRecoilState(minimizedState);
@@ -64,7 +73,9 @@ export default function Taskbar({ isMobile }) {
           className={`taskbar-start${startOpen ? " taskbar-btn--active" : ""}`}
           onClick={() => setStartOpen((o) => !o)}
         >
-          <span className="taskbar-start-icon">📎</span>
+          <span className="taskbar-start-icon" aria-hidden="true">
+            <Windows95FlyingWindows size={ICON_SIZE} alt="Start" />
+          </span>
           Start
         </button>
 
@@ -76,14 +87,18 @@ export default function Taskbar({ isMobile }) {
                 className="start-menu-item"
                 onClick={handleEditorClick}
               >
-                <span className="start-menu-icon">✏️</span>
+                <span className="start-menu-icon" aria-hidden="true">
+                  <Windows95Notepad size={MENU_ICON_SIZE} alt="Editor" />
+                </span>
                 Editor
               </li>
               <li
                 className="start-menu-item"
                 onClick={handlePreviewClick}
               >
-                <span className="start-menu-icon">📄</span>
+                <span className="start-menu-icon" aria-hidden="true">
+                  <Windows98WriteDocument size={MENU_ICON_SIZE} alt="Preview" />
+                </span>
                 Preview
               </li>
               {!isMobile && (
@@ -91,7 +106,9 @@ export default function Taskbar({ isMobile }) {
                   className="start-menu-item"
                   onClick={handleResetLayout}
                 >
-                  <span className="start-menu-icon">🧭</span>
+                  <span className="start-menu-icon" aria-hidden="true">
+                    <Windows95Explorer size={MENU_ICON_SIZE} alt="Reset layout" />
+                  </span>
                   Reset layout
                 </li>
               )}
@@ -106,13 +123,19 @@ export default function Taskbar({ isMobile }) {
         className={`taskbar-btn${editorActive ? " taskbar-btn--active" : ""}`}
         onClick={handleEditorClick}
       >
-        ✏️ Editor
+        <span className="taskbar-btn-icon" aria-hidden="true">
+          <Windows95Notepad size={ICON_SIZE} alt="Editor" />
+        </span>
+        Editor
       </button>
       <button
         className={`taskbar-btn${previewActive ? " taskbar-btn--active" : ""}`}
         onClick={handlePreviewClick}
       >
-        👁 Preview
+        <span className="taskbar-btn-icon" aria-hidden="true">
+          <Windows98WriteDocument size={ICON_SIZE} alt="Preview" />
+        </span>
+        Preview
       </button>
     </div>
   );

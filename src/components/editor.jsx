@@ -1,4 +1,5 @@
 import React from "react";
+import { Windows95Notepad } from "react-old-icons";
 import {
   textState,
   activeWindowState,
@@ -59,7 +60,10 @@ export const Editor = ({ tabMode = false }) => {
         onMouseDown={() => setActiveWindow(WINDOW_IDS.EDITOR)}
       >
         <div className="title-bar handle">
-          <div className="title-bar-text">Editor</div>
+          <div className="title-bar-text">
+            <Windows95Notepad size={16} alt="" className="title-bar-icon" />
+            Editor
+          </div>
           <div className="title-bar-controls">
             <button
               aria-label="Minimize"

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Windows98WriteDocument } from "react-old-icons";
 import {
   textState,
   activeWindowState,
@@ -88,7 +89,10 @@ export default function Preview({ tabMode = false }) {
         onMouseDown={() => setActiveWindow(WINDOW_IDS.PREVIEW)}
       >
         <div className="title-bar handle">
-          <div className="title-bar-text">Preview</div>
+          <div className="title-bar-text">
+            <Windows98WriteDocument size={16} alt="" className="title-bar-icon" />
+            Preview
+          </div>
           <div className="title-bar-controls">
             <button
               aria-label="Minimize"

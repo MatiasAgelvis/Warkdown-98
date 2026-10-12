@@ -124,6 +124,46 @@ textarea {
 
 .taskbar-start-icon {
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.taskbar-start-icon img,
+.taskbar-btn-icon img,
+.start-menu-icon img,
+.title-bar-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.taskbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.taskbar-btn-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.start-menu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-menu-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.title-bar-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .taskbar-separator {
