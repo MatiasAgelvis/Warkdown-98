@@ -61,7 +61,7 @@ html, body{
   min-width: 420px;
   min-height: 240px;
   max-width: none;
-  max-height: calc(100vh - 32px);
+  max-height: calc(100vh - 42px);
   display: flex;
   flex-direction: column;
   resize: both;
@@ -329,7 +329,7 @@ html, body {
 /* Mobile tab view */
 .mobile-container {
   padding: 4px;
-  height: calc(100vh - 32px);
+  height: calc(100vh - 42px);
   box-sizing: border-box;
 }
 
