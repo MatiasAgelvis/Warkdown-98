@@ -18,6 +18,7 @@
     "react-draggable": "^4.4.5",
     "react-is": ">= 16.8.0",
     "react-markdown": "^8.0.2",
+    "react-old-icons": "^1.0.2",
     "react-remark": "^2.1.0",
     "recoil": "^0.7.0"
   },
