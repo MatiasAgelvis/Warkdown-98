@@ -2,7 +2,7 @@ import React from "react";
 import { Windows95Notepad } from "react-old-icons";
 import { useText, useActiveWindow, useMinimized, useWindowLayout } from "../store";
 import Draggable from "react-draggable";
-import { WINDOW_IDS, clampWindowPosition } from "../layout";
+import { WINDOW_IDS, clampWindowPosition, measureWindowSize } from "../layout";
 
 import "../index.scss";
 
@@ -32,7 +32,11 @@ export const Editor = ({ tabMode = false }) => {
   const syncPosition = (position) => {
     setLayout((current) => ({
       ...current,
-      [WINDOW_IDS.EDITOR]: clampWindowPosition(position),
+      [WINDOW_IDS.EDITOR]: clampWindowPosition(
+        position,
+        undefined,
+        measureWindowSize(WINDOW_IDS.EDITOR)
+      ),
     }));
   };
 
@@ -50,7 +54,10 @@ export const Editor = ({ tabMode = false }) => {
     <Draggable {...dragOptions}>
       <div
         className={`window editor-window${minimized.editor ? " is-minimized" : ""}`}
-        style={{ zIndex: activeWindow === WINDOW_IDS.EDITOR ? 20 : 10 }}
+        style={{
+          zIndex: activeWindow === WINDOW_IDS.EDITOR ? 20 : 10,
+          "--window-top": `${layout[WINDOW_IDS.EDITOR].y}px`,
+        }}
         onMouseDown={() => setActiveWindow(WINDOW_IDS.EDITOR)}
       >
         <div className="title-bar handle">

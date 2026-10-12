@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import { renderToStaticMarkup } from "react-dom/server";
 import { saveAs } from 'file-saver';
 import { jsPDF } from "jspdf";
-import { WINDOW_IDS, clampWindowPosition } from "../layout";
+import { WINDOW_IDS, clampWindowPosition, measureWindowSize } from "../layout";
 
 import "../index.scss";
 
@@ -63,7 +63,11 @@ export default function Preview({ tabMode = false }) {
   const syncPosition = (position) => {
     setLayout((current) => ({
       ...current,
-      [WINDOW_IDS.PREVIEW]: clampWindowPosition(position),
+      [WINDOW_IDS.PREVIEW]: clampWindowPosition(
+        position,
+        undefined,
+        measureWindowSize(WINDOW_IDS.PREVIEW)
+      ),
     }));
   };
 
@@ -81,7 +85,10 @@ export default function Preview({ tabMode = false }) {
     <Draggable {...dragOptions}>
       <div
         className={`window preview-window${minimized.preview ? " is-minimized" : ""}`}
-        style={{ zIndex: activeWindow === WINDOW_IDS.PREVIEW ? 20 : 10 }}
+        style={{
+          zIndex: activeWindow === WINDOW_IDS.PREVIEW ? 20 : 10,
+          "--window-top": `${layout[WINDOW_IDS.PREVIEW].y}px`,
+        }}
         onMouseDown={() => setActiveWindow(WINDOW_IDS.PREVIEW)}
       >
         <div className="title-bar handle">

@@ -14,6 +14,7 @@
   --dialog-gray: #808080;
   --dialog-gray-light: #b5b5b5;
   --link-blue: #0000ff;
+  --taskbar-height: 28px;
 
   /* Field borders (checkbox, input, etc) flip window-frame and button-shadow */
   --border-field: inset -1px -1px var(--button-highlight),
@@ -58,10 +59,16 @@ html, body{
   top: 0;
   width: 40vw;
   height: 40vh;
-  min-width: 420px;
+  min-width: 320px;
   min-height: 240px;
   max-width: none;
-  max-height: calc(100vh - 42px);
+  /* Capped against the taskbar, accounting for how far the window is
+     dragged down (--window-top is set inline from the drag position). */
+  // The 10px accounts for the window frame, and the taskbar height.
+  // Pixel perfect.
+  max-height: calc(
+    100vh - var(--taskbar-height) - var(--window-top, 0px) - 10px
+  );
   display: flex;
   flex-direction: column;
   resize: both;
@@ -131,7 +138,7 @@ textarea {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 32px;
+  height: var(--taskbar-height);
   background: var(--surface);
   box-shadow: inset 0 1px var(--button-highlight);
   display: flex;
@@ -246,7 +253,7 @@ textarea {
 
 .start-menu {
   position: absolute;
-  bottom: 30px;
+  bottom: var(--taskbar-height);
   left: 0;
   display: flex;
   background: var(--surface);
