@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
+  MicrosoftWord5,
   Windows95FlyingWindows,
   Windows95Notepad,
   Windows98WriteDocument,
@@ -81,7 +82,12 @@ export default function Taskbar({ isMobile }) {
 
         {startOpen && (
           <div className="start-menu" onClick={() => setStartOpen(false)}>
-            <div className="start-menu-sidebar">Warkdown 98</div>
+            <div className="start-menu-sidebar">
+              <span className="start-menu-sidebar-icon" aria-hidden="true">
+                <MicrosoftWord5 size={32} alt="" />
+              </span>
+              Warkdown 98
+            </div>
             <ul className="start-menu-list">
               <li
                 className="start-menu-item"

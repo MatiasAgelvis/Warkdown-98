@@ -216,15 +216,35 @@ textarea {
   transform: rotate(180deg);
   background: var(--dialog-blue);
   color: var(--button-highlight);
-  font-weight: bold;
-  font-size: 15px;
+  font-family: "Pixelated MS Sans Serif", "MS Sans Serif", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
   padding: 8px 4px;
   letter-spacing: 1px;
+  text-shadow: 1px 1px 0 #000;
   user-select: none;
   white-space: nowrap;
   overflow-wrap: normal;
   word-break: keep-all;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.start-menu-sidebar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* counter the parent sidebar's 180deg rotation so the icon reads correctly */
+  transform: rotate(180deg);
+  writing-mode: horizontal-tb;
+}
+
+.start-menu-sidebar-icon img {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
 }
 
 .start-menu-list {
