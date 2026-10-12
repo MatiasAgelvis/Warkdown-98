@@ -1,20 +1,14 @@
 import React from "react";
 import { Windows95Notepad } from "react-old-icons";
-import {
-  textState,
-  activeWindowState,
-  minimizedState,
-  windowLayoutState,
-} from "../store";
-import { useRecoilState } from "recoil";
+import { useText, useActiveWindow, useMinimized, useWindowLayout } from "../store";
 import Draggable from "react-draggable";
 import { WINDOW_IDS, clampWindowPosition } from "../layout";
 
 import "../index.scss";
 
 export const EditorContent = () => {
-  const [input, setInput] = useRecoilState(textState);
-  const onChange = (event) => setInput(event.target.value);
+  const [input, setText] = useText();
+  const onChange = (event) => setText(event.target.value);
 
   return (
     <div className="window-body">
@@ -27,9 +21,9 @@ export const EditorContent = () => {
 };
 
 export const Editor = ({ tabMode = false }) => {
-  const [activeWindow, setActiveWindow] = useRecoilState(activeWindowState);
-  const [minimized, setMinimized] = useRecoilState(minimizedState);
-  const [layout, setLayout] = useRecoilState(windowLayoutState);
+  const [activeWindow, setActiveWindow] = useActiveWindow();
+  const [minimized, setMinimized] = useMinimized();
+  const [layout, setLayout] = useWindowLayout();
 
   if (tabMode) return <EditorContent />;
 

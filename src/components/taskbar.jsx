@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
 import {
   MicrosoftWord5,
   Windows95FlyingWindows,
@@ -7,12 +6,7 @@ import {
   Windows98WriteDocument,
   Windows95Explorer,
 } from "react-old-icons";
-import {
-  minimizedState,
-  activeTabState,
-  activeWindowState,
-  windowLayoutState,
-} from "../store";
+import { useMinimized, useActiveTab, useActiveWindow, useSetWindowLayout } from "../store";
 import { WINDOW_IDS, getDefaultWindowLayout } from "../layout";
 
 const ICON_SIZE = 16;
@@ -28,10 +22,10 @@ function useClock() {
 }
 
 export default function Taskbar({ isMobile }) {
-  const [minimized, setMinimized] = useRecoilState(minimizedState);
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
-  const [activeWindow, setActiveWindow] = useRecoilState(activeWindowState);
-  const [, setWindowLayout] = useRecoilState(windowLayoutState);
+  const [minimized, setMinimized] = useMinimized();
+  const [activeTab, setActiveTab] = useActiveTab();
+  const [activeWindow, setActiveWindow] = useActiveWindow();
+  const setWindowLayout = useSetWindowLayout();
   const [startOpen, setStartOpen] = useState(false);
   const now = useClock();
   const clockLabel = now.toLocaleTimeString([], {

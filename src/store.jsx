@@ -1,4 +1,5 @@
-import { atom } from "recoil";
+import { create } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 import {
   WINDOW_IDS,
   WINDOW_LAYOUT_STORAGE_KEY,
@@ -51,11 +52,6 @@ Link to [Vite](https://vitejs.dev) for fast dev build.
 Ready to edit and export with clear sections and code samples.
 `;
 
-export const textState = atom({
-  key: "textState", // unique ID (with respect to other atoms/selectors)
-  default: defaultMarkdown, // default value (aka initial value)
-});
-
 function getInitialWindowLayout() {
   if (typeof window === "undefined") {
     return getDefaultWindowLayout();
@@ -73,68 +69,46 @@ function getInitialWindowLayout() {
   }
 }
 
-export const activeWindowState = atom({
-  key: "activeWindowState",
-  default: WINDOW_IDS.EDITOR,
-});
+// Setters accept either a value or an updater function, mirroring the
+// functional-update signature the previous Recoil setters exposed.
+const resolve = (update, current) =>
+  typeof update === "function" ? update(current) : update;
 
-export const windowLayoutState = atom({
-  key: "windowLayoutState",
-  default: getInitialWindowLayout(),
-});
+export const useAppStore = create((set) => ({
+  text: defaultMarkdown,
+  activeWindow: WINDOW_IDS.EDITOR,
+  windowLayout: getInitialWindowLayout(),
+  minimized: { editor: false, preview: false },
+  activeTab: "editor",
 
-export const minimizedState = atom({
-  key: "minimizedState",
-  default: { editor: false, preview: false },
-});
+  setText: (update) => set((state) => ({ text: resolve(update, state.text) })),
+  setActiveWindow: (activeWindow) => set({ activeWindow }),
+  setWindowLayout: (update) =>
+    set((state) => ({ windowLayout: resolve(update, state.windowLayout) })),
+  setMinimized: (update) =>
+    set((state) => ({ minimized: resolve(update, state.minimized) })),
+  setActiveTab: (activeTab) => set({ activeTab }),
+}));
 
-export const activeTabState = atom({
-  key: "activeTabState",
-  default: "editor",
-});
+// Per-slice hooks: each returns [value, setter] for destructuring,
+// mirroring the previous Recoil `useRecoilState` API. `useShallow`
+// keeps the tuple referentially stable so zustand doesn't re-render
+// when an unrelated slice changes.
+export const useText = () =>
+  useAppStore(useShallow((s) => [s.text, s.setText]));
 
-// const defaultMarkdown = 
-// `# Welcome to my React Markdown Previewer!
+export const useActiveWindow = () =>
+  useAppStore(useShallow((s) => [s.activeWindow, s.setActiveWindow]));
 
-// ## This is a sub-heading...
-// ### And here's some other cool stuff:
+export const useWindowLayout = () =>
+  useAppStore(useShallow((s) => [s.windowLayout, s.setWindowLayout]));
 
-// Heres some code, \`<div></div>\`, between 2 backticks.
+export const useMinimized = () =>
+  useAppStore(useShallow((s) => [s.minimized, s.setMinimized]));
 
-// \`\`\`
-// // this is multi-line code:
+export const useActiveTab = () =>
+  useAppStore(useShallow((s) => [s.activeTab, s.setActiveTab]));
 
-// function anotherExample(firstLine, lastLine) {
-//   if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
-//     return multiLineCode;
-//   }
-// }
-// \`\`\`
-
-// You can also make text **bold**... whoa!
-// Or _italic_.
-// Or... wait for it... **_both!_**
-// And feel free to go crazy ~~crossing stuff out~~.
-
-// There's also [links](https://www.freecodecamp.org), and
-// > Block Quotes!
-
-// And if you want to get really crazy, even tables:
-
-// Wild Header | Crazy Header | Another Header?
-// ------------ | ------------- | -------------
-// Your content can | be here, and it | can be here....
-// And here. | Okay. | I think we get it.
-
-// - And of course there are lists.
-//   - Some are bulleted.
-//      - With different indentation levels.
-//         - That look like this.
-
-
-// 1. And there are numbered lists too.
-// 1. Use just 1s if you want!
-// 1. And last but not least, let's not forget embedded images:
-
-// ![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
-// `
+// Write-only hook for components that don't need to read the value.
+export const useSetWindowLayout = () =>
+  useAppStore((s) => s.setWindowLayout);

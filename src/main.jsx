@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { RecoilRoot, useRecoilState } from "recoil";
 import "./index.scss";
 import { Editor } from "./components/editor";
 import Preview from "./components/preview";
 import Taskbar from "./components/taskbar";
-import { activeTabState, windowLayoutState } from "./store";
+import { useAppStore, useActiveTab, useWindowLayout } from "./store";
 import {
   WINDOW_LAYOUT_STORAGE_KEY,
   sanitizeWindowLayout,
@@ -23,7 +22,7 @@ function useIsMobile(breakpoint = 768) {
 }
 
 function MobileTabView() {
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
+  const [activeTab, setActiveTab] = useActiveTab();
 
   return (
     <div className="mobile-container">
@@ -77,7 +76,7 @@ function MobileTabView() {
 
 function App() {
   const isMobile = useIsMobile();
-  const [windowLayout, setWindowLayout] = useRecoilState(windowLayoutState);
+  const [windowLayout, setWindowLayout] = useWindowLayout();
 
   useEffect(() => {
     if (isMobile) {
@@ -124,10 +123,5 @@ function App() {
   );
 }
 
-ReactDOM.render(
-  <RecoilRoot>
-    <App />
-  </RecoilRoot>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 

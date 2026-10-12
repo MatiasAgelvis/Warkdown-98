@@ -17,7 +17,7 @@
     "react-is": ">= 16.8.0",
     "react-markdown": "^8.0.2",
     "react-old-icons": "^1.0.2",
-    "recoil": "^0.7.0"
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",

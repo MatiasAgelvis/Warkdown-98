@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Windows98WriteDocument } from "react-old-icons";
-import {
-  textState,
-  activeWindowState,
-  minimizedState,
-  windowLayoutState,
-} from "../store";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useText, useActiveWindow, useMinimized, useWindowLayout } from "../store";
 import Draggable from "react-draggable";
 import ReactMarkdown from "react-markdown";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -17,7 +11,7 @@ import { WINDOW_IDS, clampWindowPosition } from "../layout";
 import "../index.scss";
 
 export const PreviewContent = () => {
-  const markdownInput = useRecoilValue(textState);
+  const [markdownInput] = useText();
   const [wordWrap, setWordWrap] = useState(false);
 
   const htmlRender = renderToStaticMarkup(
@@ -58,9 +52,9 @@ export const PreviewContent = () => {
 };
 
 export default function Preview({ tabMode = false }) {
-  const [activeWindow, setActiveWindow] = useRecoilState(activeWindowState);
-  const [minimized, setMinimized] = useRecoilState(minimizedState);
-  const [layout, setLayout] = useRecoilState(windowLayoutState);
+  const [activeWindow, setActiveWindow] = useActiveWindow();
+  const [minimized, setMinimized] = useMinimized();
+  const [layout, setLayout] = useWindowLayout();
 
   if (tabMode) return <PreviewContent />;
 
