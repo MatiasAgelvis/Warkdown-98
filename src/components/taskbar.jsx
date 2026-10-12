@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import {
   MicrosoftWord5,
@@ -18,12 +18,26 @@ import { WINDOW_IDS, getDefaultWindowLayout } from "../layout";
 const ICON_SIZE = 16;
 const MENU_ICON_SIZE = 20;
 
+function useClock() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30_000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
+
 export default function Taskbar({ isMobile }) {
   const [minimized, setMinimized] = useRecoilState(minimizedState);
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [activeWindow, setActiveWindow] = useRecoilState(activeWindowState);
   const [, setWindowLayout] = useRecoilState(windowLayoutState);
   const [startOpen, setStartOpen] = useState(false);
+  const now = useClock();
+  const clockLabel = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   const handleEditorClick = () => {
     if (isMobile) {
@@ -143,6 +157,10 @@ export default function Taskbar({ isMobile }) {
         </span>
         Preview
       </button>
+
+      <div className="taskbar-tray" aria-label="System clock">
+        {clockLabel}
+      </div>
     </div>
   );
 }
