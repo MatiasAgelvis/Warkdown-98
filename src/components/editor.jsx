@@ -17,14 +17,12 @@ export const EditorContent = () => {
   const onChange = (event) => setInput(event.target.value);
 
   return (
-    <>
-      <div className="window-body">
-        <textarea value={input} onChange={onChange} id="editor" />
-      </div>
+    <div className="window-body">
+      <textarea value={input} onChange={onChange} id="editor" />
       <div className="status-bar">
-        <p className="status-bar-field">Character Count: {input.length}</p>
+        <div className="status-bar-field">Character Count: {input.length}</div>
       </div>
-    </>
+    </div>
   );
 };
 
