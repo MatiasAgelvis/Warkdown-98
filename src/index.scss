@@ -97,6 +97,13 @@ textarea {
   display: none;
 }
 
+/* Status bar fields: center children vertically so checkboxes/labels align */
+.status-bar-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* Taskbar */
 .taskbar {
   position: fixed;
