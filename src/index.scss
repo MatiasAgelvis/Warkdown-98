@@ -21,6 +21,14 @@
     inset 2px 2px var(--window-frame);
 }
 
+/* 98.css leaves buttons on the default arrow; pointer gives clearer
+   feedback for the same affordance. */
+button,
+label[for],
+.start-menu-item {
+  cursor: pointer;
+}
+
 html, body{
   background-color:  #018281;
   height: 100vh;
@@ -298,7 +306,6 @@ textarea {
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  cursor: pointer;
   font-size: 13px;
   white-space: nowrap;
 }
