@@ -43,15 +43,15 @@ export const PreviewContent = () => {
       </div>
 
       <div className="status-bar">
-        <p className="status-bar-field">
+        <div className="status-bar-field">
           <input type="checkbox" id="wrodwrap" onChange={() => setWordWrap(!wordWrap)} />
           <label htmlFor="wrodwrap">Word Wrap</label>
-        </p>
-        <p className="status-bar-field">Download formats:{"\t"}
+        </div>
+        <div className="status-bar-field status-bar-field--grow">Download formats:{"\t"}
           <button onClick={() => textDownloader(markdownInput, 'text/markdown', 'Warkdown98.md')}>Markdown</button>
           <button onClick={() => textDownloader(htmlRender, 'text/html', 'Warkdown98.html')}>HTML</button>
           <button onClick={() => htmlPdf(htmlRender, 'Warkdown98.pdf')}>PDF</button>
-        </p>
+        </div>
       </div>
     </div>
   );
