@@ -72,8 +72,8 @@ function getInitialWindowLayout() {
   }
 }
 
-// Setters accept either a value or an updater function, mirroring the
-// functional-update signature the previous Recoil setters exposed.
+// Setters accept either a value or an updater function, so call sites can
+// use `setText("x")` or `setText((prev) => ...)` interchangeably.
 const resolve = (update, current) =>
   typeof update === "function" ? update(current) : update;
 
@@ -93,10 +93,10 @@ export const useAppStore = create((set) => ({
   setActiveTab: (activeTab) => set({ activeTab }),
 }));
 
-// Per-slice hooks: each returns [value, setter] for destructuring,
-// mirroring the previous Recoil `useRecoilState` API. `useShallow`
-// keeps the tuple referentially stable so zustand doesn't re-render
-// when an unrelated slice changes.
+// Per-slice hooks: each returns [value, setter] for destructuring, matching
+// the `useState` shape callers expect. `useShallow` keeps the tuple
+// referentially stable so zustand doesn't re-render when an unrelated
+// slice changes.
 export const useText = () =>
   useAppStore(useShallow((s) => [s.text, s.setText]));
 
