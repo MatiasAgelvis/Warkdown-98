@@ -350,13 +350,14 @@ textarea {
 
 /* Keep windows above taskbar */
 html, body {
-  padding-bottom: 32px;
+  padding-bottom: var(--taskbar-height);
 }
 
 /* Mobile tab view */
 .mobile-container {
   padding: 4px;
-  height: calc(100vh - 42px);
+  /* 10px of breathing room above the taskbar */
+  height: calc(100vh - var(--taskbar-height) - 10px);
   box-sizing: border-box;
 }
 

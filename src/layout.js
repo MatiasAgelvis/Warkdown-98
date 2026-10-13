@@ -4,7 +4,9 @@ export const WINDOW_IDS = {
 };
 
 export const WINDOW_LAYOUT_STORAGE_KEY = "warkdown98.windowLayout";
-const DEFAULT_TASKBAR_HEIGHT = 32;
+// Fallback for the CSS custom property when it isn't readable (SSR, or
+// before stylesheets load). Must stay in sync with --taskbar-height.
+const DEFAULT_TASKBAR_HEIGHT = 28;
 const DEFAULT_VIEWPORT = { width: 1280, height: 720 };
 
 // Single source of truth for the taskbar size is the CSS custom property,
