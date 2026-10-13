@@ -1,6 +1,6 @@
 import { saveAs } from 'file-saver';
 import { jsPDF } from "jspdf";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Draggable from "react-draggable";
 import ReactMarkdown from "react-markdown";
@@ -62,6 +62,8 @@ export default function Preview({ tabMode = false }) {
 
   if (tabMode) return <PreviewContent />;
 
+  const nodeRef = useRef(null);
+
   const syncPosition = (position) => {
     setLayout((current) => ({
       ...current,
@@ -79,6 +81,7 @@ export default function Preview({ tabMode = false }) {
     grid: [2, 2],
     bounds: { top: 0 },
     handle: ".handle",
+    nodeRef,
     // Win98 doesn't allow dragging a maximized window.
     disabled: isMaximized,
     position: isMaximized ? { x: 0, y: 0 } : layout[WINDOW_IDS.PREVIEW],
@@ -90,6 +93,7 @@ export default function Preview({ tabMode = false }) {
   return (
     <Draggable {...dragOptions}>
       <div
+        ref={nodeRef}
         className={`window preview-window${minimized.preview ? " is-minimized" : ""}${isMaximized ? " is-maximized" : ""}`}
         style={{
           zIndex: activeWindow === WINDOW_IDS.PREVIEW ? 20 : 10,
