@@ -8,48 +8,51 @@ import {
 } from "./layout";
 
 const defaultMarkdown = 
-`# Welcome to my React Markdown Previewer
+`# Warkdown 98
 
-## Quick sample
-### Styled text and content
+A markdown editor that never stopped believing in floppy disks.
 
-Use **bold** text, _italic_, and **_both_** for emphasis.
+## Why this exists
 
-- Unordered item 1
-- Unordered item 2
-  - Nested item
+Most editors ask you to make an account before you can write a
+paragraph. This one opens, takes your text, and renders it — no
+network call, no sign-in, no cookie banner.
 
-1. Ordered step one
-1. Ordered step two
+> Everything happens in your browser. Close the tab and nothing
+> was uploaded, because nothing ever left.
 
-> This is a blockquote to highlight a note.
+## What it does
 
-Inline code looks like "const x = 5;".
+- **Drag the panes** wherever you like — the layout is remembered
+  - resize from the bottom-right corner
+  - hit *Start -> Reset layout* if you get lost
+- **Preview as you type**, with word wrap on demand
+- **Export** to Markdown, HTML, or PDF from the status bar
 
-">
-">
-The sample below shows a fenced code block:
+## Under the hood
 
+Rendering is handled by \`react-markdown\`, which walks the source and
+builds an element tree — no \`dangerouslySetInnerHTML\` in this app:
+
+\`\`\`js
+const tree = toHast(parse(source));
+render(tree);
 \`\`\`
-function greet(name) {
-  return "Hello, ${name}!";
-}
-console.log(greet('World'));
-\`\`\`
 
-Link to [Vite](https://vitejs.dev) for fast dev build.
+| Feature | Format | Handler |
+| ------- | ------ | ------- |
+| Source | .md | file-saver |
+| Markup | .html | renderToStaticMarkup |
+| Print | .pdf | jsPDF |
 
-| Feature | Example |
-| --- | --- |
-| Heading | H1, H2, H3 |
-| List | Ordered + unordered |
+## Still to come
 
-- [x] Task one
-- [ ] Task two
+- [x] Draggable, persistent windows
+- [x] Status bar exports
+- [ ] Image upload
+- [ ] Find and replace
 
----
-
-Ready to edit and export with clear sections and code samples.
+See the [roadmap](https://github.com/MatiasAgelvis/Warkdown-98) for the rest.
 `;
 
 function getInitialWindowLayout() {
