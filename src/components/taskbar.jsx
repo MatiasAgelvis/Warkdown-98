@@ -6,7 +6,13 @@ import {
   Windows98WriteDocument,
   Windows95Explorer,
 } from "react-old-icons";
-import { useMinimized, useActiveTab, useActiveWindow, useSetWindowLayout } from "../store";
+import {
+  useMinimized,
+  useSetMaximized,
+  useActiveTab,
+  useActiveWindow,
+  useSetWindowLayout,
+} from "../store";
 import { WINDOW_IDS, getDefaultWindowLayout } from "../layout";
 
 const ICON_SIZE = 16;
@@ -23,6 +29,7 @@ function useClock() {
 
 export default function Taskbar({ isMobile }) {
   const [minimized, setMinimized] = useMinimized();
+  const setMaximized = useSetMaximized();
   const [activeTab, setActiveTab] = useActiveTab();
   const [activeWindow, setActiveWindow] = useActiveWindow();
   const setWindowLayout = useSetWindowLayout();
@@ -78,6 +85,7 @@ export default function Taskbar({ isMobile }) {
   const handleResetLayout = () => {
     setWindowLayout(getDefaultWindowLayout());
     setMinimized({ editor: false, preview: false });
+    setMaximized({ editor: false, preview: false });
     setActiveWindow(WINDOW_IDS.EDITOR);
     setStartOpen(false);
   };

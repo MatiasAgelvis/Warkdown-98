@@ -82,6 +82,7 @@ export const useAppStore = create((set) => ({
   activeWindow: WINDOW_IDS.EDITOR,
   windowLayout: getInitialWindowLayout(),
   minimized: { editor: false, preview: false },
+  maximized: { editor: false, preview: false },
   activeTab: "editor",
 
   setText: (update) => set((state) => ({ text: resolve(update, state.text) })),
@@ -90,6 +91,8 @@ export const useAppStore = create((set) => ({
     set((state) => ({ windowLayout: resolve(update, state.windowLayout) })),
   setMinimized: (update) =>
     set((state) => ({ minimized: resolve(update, state.minimized) })),
+  setMaximized: (update) =>
+    set((state) => ({ maximized: resolve(update, state.maximized) })),
   setActiveTab: (activeTab) => set({ activeTab }),
 }));
 
@@ -109,9 +112,15 @@ export const useWindowLayout = () =>
 export const useMinimized = () =>
   useAppStore(useShallow((s) => [s.minimized, s.setMinimized]));
 
+export const useMaximized = () =>
+  useAppStore(useShallow((s) => [s.maximized, s.setMaximized]));
+
 export const useActiveTab = () =>
   useAppStore(useShallow((s) => [s.activeTab, s.setActiveTab]));
 
-// Write-only hook for components that don't need to read the value.
+// Write-only hooks for components that don't need to read the value.
 export const useSetWindowLayout = () =>
   useAppStore((s) => s.setWindowLayout);
+
+export const useSetMaximized = () =>
+  useAppStore((s) => s.setMaximized);

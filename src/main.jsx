@@ -4,7 +4,7 @@ import "./index.scss";
 import { Editor } from "./components/editor";
 import Preview from "./components/preview";
 import Taskbar from "./components/taskbar";
-import { useAppStore, useActiveTab, useWindowLayout } from "./store";
+import { useActiveTab, useWindowLayout } from "./store";
 import {
   WINDOW_LAYOUT_STORAGE_KEY,
   sanitizeWindowLayout,

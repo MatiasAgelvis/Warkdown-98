@@ -89,6 +89,20 @@ html, body{
   min-height: 0;
 }
 
+/* Maximised: fill the desktop above the taskbar. border-box because
+   .window carries 3px padding and content-box would overflow the
+   viewport, reintroducing a global scrollbar. */
+.editor-window.is-maximized,
+.preview-window.is-maximized {
+  width: 100vw;
+  height: calc(100vh - var(--taskbar-height));
+  max-width: none;
+  max-height: none;
+  box-sizing: border-box;
+  /* Win98 can't resize a maximised window. */
+  resize: none;
+}
+
 textarea {
   width: 100%;
   flex: 1;

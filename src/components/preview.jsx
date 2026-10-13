@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 import { Windows98WriteDocument } from "react-old-icons";
 import remarkGfm from "remark-gfm";
 import { WINDOW_IDS, clampWindowPosition, measureWindowSize } from "../layout";
-import { useActiveWindow, useMinimized, useText, useWindowLayout } from "../store";
+import { useActiveWindow, useMinimized, useMaximized, useText, useWindowLayout } from "../store";
 
 import "../index.scss";
 
@@ -57,6 +57,7 @@ export const PreviewContent = () => {
 export default function Preview({ tabMode = false }) {
   const [activeWindow, setActiveWindow] = useActiveWindow();
   const [minimized, setMinimized] = useMinimized();
+  const [maximized, setMaximized] = useMaximized();
   const [layout, setLayout] = useWindowLayout();
 
   if (tabMode) return <PreviewContent />;
@@ -72,11 +73,15 @@ export default function Preview({ tabMode = false }) {
     }));
   };
 
+  const isMaximized = maximized.preview;
+
   const dragOptions = {
     grid: [2, 2],
     bounds: { top: 0 },
     handle: ".handle",
-    position: layout[WINDOW_IDS.PREVIEW],
+    // Win98 doesn't allow dragging a maximized window.
+    disabled: isMaximized,
+    position: isMaximized ? { x: 0, y: 0 } : layout[WINDOW_IDS.PREVIEW],
     onStart: () => setActiveWindow(WINDOW_IDS.PREVIEW),
     onDrag: (_, data) => syncPosition({ x: data.x, y: data.y }),
     onStop: (_, data) => syncPosition({ x: data.x, y: data.y }),
@@ -85,11 +90,11 @@ export default function Preview({ tabMode = false }) {
   return (
     <Draggable {...dragOptions}>
       <div
-        className={`window preview-window${minimized.preview ? " is-minimized" : ""}`}
+        className={`window preview-window${minimized.preview ? " is-minimized" : ""}${isMaximized ? " is-maximized" : ""}`}
         style={{
           zIndex: activeWindow === WINDOW_IDS.PREVIEW ? 20 : 10,
-          "--window-top": `${layout[WINDOW_IDS.PREVIEW].y}px`,
-          "--window-left": `${layout[WINDOW_IDS.PREVIEW].x}px`,
+          "--window-top": isMaximized ? "0px" : `${layout[WINDOW_IDS.PREVIEW].y}px`,
+          "--window-left": isMaximized ? "0px" : `${layout[WINDOW_IDS.PREVIEW].x}px`,
         }}
         onMouseDown={() => setActiveWindow(WINDOW_IDS.PREVIEW)}
       >
@@ -103,7 +108,12 @@ export default function Preview({ tabMode = false }) {
               aria-label="Minimize"
               onClick={() => setMinimized((m) => ({ ...m, preview: true }))}
             />
-            <button aria-label="Maximize" />
+            <button
+              aria-label={isMaximized ? "Restore" : "Maximize"}
+              onClick={() =>
+                setMaximized((m) => ({ editor: false, preview: !m.preview }))
+              }
+            />
             <button aria-label="Close" />
           </div>
         </div>
