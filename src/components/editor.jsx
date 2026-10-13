@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Windows95Notepad } from "react-old-icons";
 import { useText, useActiveWindow, useMinimized, useMaximized, useWindowLayout } from "../store";
 import Draggable from "react-draggable";
@@ -30,6 +30,8 @@ export const Editor = ({ tabMode = false }) => {
 
   if (tabMode) return <EditorContent />;
 
+  const nodeRef = useRef(null);
+
   const syncPosition = (position) => {
     setLayout((current) => ({
       ...current,
@@ -47,6 +49,7 @@ export const Editor = ({ tabMode = false }) => {
     grid: [2, 2],
     bounds: { top: 0 },
     handle: ".handle",
+    nodeRef,
     // Win98 doesn't allow dragging a maximized window.
     disabled: isMaximized,
     position: isMaximized ? { x: 0, y: 0 } : layout[WINDOW_IDS.EDITOR],
@@ -58,6 +61,7 @@ export const Editor = ({ tabMode = false }) => {
   return (
     <Draggable {...dragOptions}>
       <div
+        ref={nodeRef}
         className={`window editor-window${minimized.editor ? " is-minimized" : ""}${isMaximized ? " is-maximized" : ""}`}
         style={{
           zIndex: activeWindow === WINDOW_IDS.EDITOR ? 20 : 10,
