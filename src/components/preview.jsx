@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Windows98WriteDocument } from "react-old-icons";
-import { useText, useActiveWindow, useMinimized, useWindowLayout } from "../store";
-import Draggable from "react-draggable";
-import ReactMarkdown from "react-markdown";
-import { renderToStaticMarkup } from "react-dom/server";
 import { saveAs } from 'file-saver';
 import { jsPDF } from "jspdf";
+import { useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import Draggable from "react-draggable";
+import ReactMarkdown from "react-markdown";
+import { Windows98WriteDocument } from "react-old-icons";
+import remarkGfm from "remark-gfm";
 import { WINDOW_IDS, clampWindowPosition, measureWindowSize } from "../layout";
+import { useActiveWindow, useMinimized, useText, useWindowLayout } from "../store";
 
 import "../index.scss";
 
@@ -15,7 +16,7 @@ export const PreviewContent = () => {
   const [wordWrap, setWordWrap] = useState(false);
 
   const htmlRender = renderToStaticMarkup(
-    <ReactMarkdown>{markdownInput}</ReactMarkdown>
+    <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownInput}</ReactMarkdown>
   );
 
   async function htmlPdf(html, filename) {
@@ -34,7 +35,7 @@ export const PreviewContent = () => {
     <>
       <div className="window-body">
         <div className={`textzone resizable ${wordWrap ? "wrapText" : ""}`} id="preview">
-          <ReactMarkdown>{markdownInput}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownInput}</ReactMarkdown>
         </div>
       </div>
 
