@@ -18,9 +18,12 @@ Everything is local: your text never leaves the browser.
 
 - **Windows 98 look and feel** — 98.css styling, pixelated fonts, and classic
   system icons
-- **Draggable windows** — reposition the editor and preview like real desktop
-  windows; positions persist between sessions
+- **Draggable, resizable windows** — reposition and resize the editor and
+  preview like real desktop windows; positions persist between sessions
+- **Maximize / restore** — fills the desktop above the taskbar, as Win98 did
 - **Live preview** — markdown renders as you type, using `react-markdown`
+- **GitHub Flavored Markdown** — tables, task lists, and strikethrough via
+  `remark-gfm`, in both the preview and the exports
 - **Word wrap toggle** — switch the preview between wrapping and scrolling
 - **Export** — download your document as Markdown, HTML, or PDF
 - **Character count** — live count in the editor's status bar
@@ -34,7 +37,7 @@ npm install
 npm run dev
 ```
 
-Then open the printed local URL (usually `http://localhost:3000`).
+Then open the printed local URL (defaults to `http://localhost:5173`).
 
 ### Other scripts
 
@@ -54,49 +57,34 @@ Deploys are handled by GitHub Actions: every push builds the app and publishes
 
 | Layer | Choice |
 | --- | --- |
-| Build | Vite 2 |
-| UI | React 17 |
+| Build | [Vite](https://vite.dev) 8 |
+| UI | React 19 |
 | Styling | SCSS + [98.css](https://github.com/jdan/98.css) |
-| State | [zustand](https://github.com/pmndrs/zustand) 4 |
-| Markdown | `react-markdown` 8 |
-| Exports | `file-saver` (Markdown/HTML), `jspdf` (PDF) |
+| State | [zustand](https://github.com/pmndrs/zustand) 5 |
+| Markdown | `react-markdown` 10 + `remark-gfm` 4 |
+| Exports | `file-saver` (Markdown/HTML), `jspdf` 4 (PDF) |
 | Icons | `react-old-icons` |
 | Window dragging | `react-draggable` |
 
-### A word on the toolchain
+### Toolchain notes
 
-The retro look is deliberate; the toolchain is not — it dates from the
-original scaffold and several pieces are well behind current releases:
+Everything above is on a current release, with two things worth knowing
+before you contribute:
 
-| Dependency | Here | Latest † |
-| --- | --- | --- |
-| React | 17 | 19 |
-| Vite | 2 | 8 |
-| `react-markdown` | 8 | 10 |
-| `jspdf` | 2 | 4 |
-| `file-saver` | 2.0.5 | 2.0.5 (unmaintained since 2018) |
-
-† at the time of writing 
-
-This is fine for what the app does — a static client with no server, no
-auth, and no user data — but it's worth knowing before contributing. The
-deps also constrain each other, so upgrades don't come one at a time:
-
-- **Vite 8** needs Node 20.19+, which the CI workflow doesn't pin yet
-  (`.github/workflows/deploy.yml`).
-- **`react-markdown` 9+** and **zustand 5** both require React 18.
-- **React 19** removes `ReactDOM.findDOMNode`, which `react-draggable`
-  falls back to when no `nodeRef` is passed. Passing `nodeRef` works on
-  React 17 today, so it can be done ahead of the upgrade.
-- **React 18** requires switching `ReactDOM.render` to `createRoot` in
-  `src/main.jsx`.
-
-React 17 and Vite 2 are both end-of-life, so treat this as a known debt
-rather than a stable baseline.
+- **`file-saver`** has not been published since 2018. The version in use is
+  the latest, and it works, but it is unmaintained. Replacing it is a small
+  job: the [`download` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#download)
+  covers the Markdown and HTML exports.
+- **`vite.config.js` carries a small PostCSS plugin** that rewrites 98.css's
+  `@media (not(hover))` to `@media not (hover)`. The original is valid
+  Media Queries Level 4, but Vite 8's CSS minifier (lightningcss) only
+  implements Level 3 and fails the build on it. The two forms are
+  semantically identical.
 
 ## Project layout
 
 ```
+vite.config.js       # Vite config + the 98.css media-query workaround
 src/
 ├── main.jsx            # App shell, mobile tab view, window layout persistence
 ├── store.jsx           # zustand store + per-slice hooks
