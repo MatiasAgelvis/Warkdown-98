@@ -5,14 +5,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install and Build 🔧
+      - name: Setup Node 🔧
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install and Build 🛠️
         run: |
-          npm install
+          npm ci
           npm run build -- --base=/${{ github.event.repository.name }}
+
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist
