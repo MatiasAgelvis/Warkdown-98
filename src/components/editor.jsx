@@ -57,6 +57,7 @@ export const Editor = ({ tabMode = false }) => {
         style={{
           zIndex: activeWindow === WINDOW_IDS.EDITOR ? 20 : 10,
           "--window-top": `${layout[WINDOW_IDS.EDITOR].y}px`,
+          "--window-left": `${layout[WINDOW_IDS.EDITOR].x}px`,
         }}
         onMouseDown={() => setActiveWindow(WINDOW_IDS.EDITOR)}
       >

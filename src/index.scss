@@ -35,6 +35,9 @@ html, body{
   height: 100vh;
   margin: 0;
   box-sizing: border-box;
+  /* Safety net: an out-of-bounds pane must never produce a page-level
+     horizontal scrollbar. Vertical stays auto so nothing can hide. */
+  overflow-x: hidden;
 }
 
 .container{
@@ -61,7 +64,10 @@ html, body{
   height: 40vh;
   min-width: 320px;
   min-height: 240px;
-  max-width: none;
+  /* Capped against the right viewport edge, accounting for how far the
+     window sits from the left (--window-left is set inline from the drag). */
+  // 6px accounts for the window frame.
+  max-width: calc(100vw - var(--window-left, 0px) - 6px);
   /* Capped against the taskbar, accounting for how far the window is
      dragged down (--window-top is set inline from the drag position). */
   // The 10px accounts for the window frame, and the taskbar height.

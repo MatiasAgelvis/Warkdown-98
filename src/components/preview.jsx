@@ -88,6 +88,7 @@ export default function Preview({ tabMode = false }) {
         style={{
           zIndex: activeWindow === WINDOW_IDS.PREVIEW ? 20 : 10,
           "--window-top": `${layout[WINDOW_IDS.PREVIEW].y}px`,
+          "--window-left": `${layout[WINDOW_IDS.PREVIEW].x}px`,
         }}
         onMouseDown={() => setActiveWindow(WINDOW_IDS.PREVIEW)}
       >
