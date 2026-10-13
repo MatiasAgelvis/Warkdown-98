@@ -54,21 +54,52 @@ Deploys are handled by GitHub Actions: every push builds the app and publishes
 
 | Layer | Choice |
 | --- | --- |
-| Build | Vite |
+| Build | Vite 2 |
 | UI | React 17 |
 | Styling | SCSS + [98.css](https://github.com/jdan/98.css) |
-| State | Recoil |
-| Markdown | `react-markdown` |
+| State | [zustand](https://github.com/pmndrs/zustand) 4 |
+| Markdown | `react-markdown` 8 |
 | Exports | `file-saver` (Markdown/HTML), `jspdf` (PDF) |
 | Icons | `react-old-icons` |
 | Window dragging | `react-draggable` |
+
+### A word on the toolchain
+
+The retro look is deliberate; the toolchain is not — it dates from the
+original scaffold and several pieces are well behind current releases:
+
+| Dependency | Here | Latest † |
+| --- | --- | --- |
+| React | 17 | 19 |
+| Vite | 2 | 8 |
+| `react-markdown` | 8 | 10 |
+| `jspdf` | 2 | 4 |
+| `file-saver` | 2.0.5 | 2.0.5 (unmaintained since 2018) |
+
+† at the time of writing 
+
+This is fine for what the app does — a static client with no server, no
+auth, and no user data — but it's worth knowing before contributing. The
+deps also constrain each other, so upgrades don't come one at a time:
+
+- **Vite 8** needs Node 20.19+, which the CI workflow doesn't pin yet
+  (`.github/workflows/deploy.yml`).
+- **`react-markdown` 9+** and **zustand 5** both require React 18.
+- **React 19** removes `ReactDOM.findDOMNode`, which `react-draggable`
+  falls back to when no `nodeRef` is passed. Passing `nodeRef` works on
+  React 17 today, so it can be done ahead of the upgrade.
+- **React 18** requires switching `ReactDOM.render` to `createRoot` in
+  `src/main.jsx`.
+
+React 17 and Vite 2 are both end-of-life, so treat this as a known debt
+rather than a stable baseline.
 
 ## Project layout
 
 ```
 src/
 ├── main.jsx            # App shell, mobile tab view, window layout persistence
-├── store.jsx           # Recoil atoms (text, active window, minimized state)
+├── store.jsx           # zustand store + per-slice hooks
 ├── layout.js           # Window position math and clamping
 ├── index.scss          # Theme, taskbar, start menu, status bars
 ├── _preview.scss       # Markdown typography in the preview pane
