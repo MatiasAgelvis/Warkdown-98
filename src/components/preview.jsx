@@ -1,5 +1,4 @@
 import { saveAs } from 'file-saver';
-import { jsPDF } from "jspdf";
 import { useRef, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import Draggable from "react-draggable";
@@ -19,13 +18,6 @@ export const PreviewContent = () => {
     <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdownInput}</ReactMarkdown>
   );
 
-  async function htmlPdf(html, filename) {
-    const doc = new jsPDF('p', 'pt', 'a4');
-    const styledHtml = `<div style='width:500px; margin: 1rem 2rem'>${html}</div>`;
-    await doc.html(styledHtml);
-    doc.save(filename);
-  }
-
   function textDownloader(blob, type, filename) {
     var blob = new Blob([blob], { type: type });
     saveAs(blob, filename);
@@ -44,10 +36,10 @@ export const PreviewContent = () => {
           <input type="checkbox" id="wrodwrap" onChange={() => setWordWrap(!wordWrap)} />
           <label htmlFor="wrodwrap">Word Wrap</label>
         </div>
-        <div className="status-bar-field status-bar-field--grow">Download formats
+        <div className="status-bar-field status-bar-field--grow">Export
           <button onClick={() => textDownloader(markdownInput, 'text/markdown', 'Warkdown98.md')}>Markdown</button>
           <button onClick={() => textDownloader(htmlRender, 'text/html', 'Warkdown98.html')}>HTML</button>
-          <button onClick={() => htmlPdf(htmlRender, 'Warkdown98.pdf')}>PDF</button>
+          <button onClick={() => window.print()}>Print</button>
         </div>
       </div>
     </>

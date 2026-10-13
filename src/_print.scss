@@ -1,0 +1,58 @@
+@media print {
+
+  /* Nothing but the rendered markdown goes to paper: no taskbar, no
+     editor, and none of the preview window's own chrome. */
+  .taskbar,
+  .editor-window,
+  .preview-window .title-bar,
+  .preview-window .status-bar {
+    display: none !important;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* The preview window is absolutely positioned, dragged by transform,
+     and capped by max-width/max-height vars. All of that has to go so
+     it lays out in normal flow at full page width. */
+  .preview-window {
+    position: static !important;
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .preview-window .window-body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Drop the sunken field chrome and the fixed pane size so content
+     determines the page count. */
+  .preview-window .textzone {
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    overflow: visible !important;
+    resize: none !important;
+    /* Always wrap on paper, whatever the on-screen toggle says. */
+    white-space: normal !important;
+  }
+}

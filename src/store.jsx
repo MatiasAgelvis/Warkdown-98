@@ -27,7 +27,8 @@ network call, no sign-in, no cookie banner.
   - resize from the bottom-right corner
   - hit *Start -> Reset layout* if you get lost
 - **Preview as you type**, with word wrap on demand
-- **Export** to Markdown, HTML, or PDF from the status bar
+- **Export** to Markdown or HTML, or print to paper (or PDF) straight
+  from the status bar
 
 ## Under the hood
 
@@ -43,7 +44,7 @@ render(tree);
 | ------- | ------ | ------- |
 | Source | .md | file-saver |
 | Markup | .html | renderToStaticMarkup |
-| Print | .pdf | jsPDF |
+| Paper | print | browser |
 
 ## Still to come
 

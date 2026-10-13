@@ -11,8 +11,9 @@
 ---
 
 Drag the editor around, drag the preview around, type markdown on one side and
-watch it render on the other. Then export the result as Markdown, HTML, or PDF.
-Everything is local: your text never leaves the browser.
+watch it render on the other. Then export the result as Markdown or HTML, or
+send it to paper via your browser's print dialog. Everything is local: your
+text never leaves the browser.
 
 ## Features
 
@@ -25,7 +26,8 @@ Everything is local: your text never leaves the browser.
 - **GitHub Flavored Markdown** — tables, task lists, and strikethrough via
   `remark-gfm`, in both the preview and the exports
 - **Word wrap toggle** — switch the preview between wrapping and scrolling
-- **Export** — download your document as Markdown, HTML, or PDF
+- **Export** — download as Markdown or HTML, or print to paper / PDF via
+  the browser
 - **Character count** — live count in the editor's status bar
 - **Taskbar** — start menu with a Reset layout action, plus a live clock
 - **Mobile mode** — on narrow screens the windows collapse into tabs
@@ -62,7 +64,7 @@ Deploys are handled by GitHub Actions: every push builds the app and publishes
 | Styling | SCSS + [98.css](https://github.com/jdan/98.css) |
 | State | [zustand](https://github.com/pmndrs/zustand) 5 |
 | Markdown | `react-markdown` 10 + `remark-gfm` 4 |
-| Exports | `file-saver` (Markdown/HTML), `jspdf` 4 (PDF) |
+| Exports | `file-saver` (Markdown/HTML), browser print (paper/PDF) |
 | Icons | `react-old-icons` |
 | Window dragging | `react-draggable` |
 
